@@ -32,14 +32,14 @@ def main():
         errorFiles = 0
         for data_sample in participant_data:
             try:
-                gC = pr.getcleangpsdata(data_sample[34])
+                gC = pr.getcleangpsdata(data_sample[34], remove_duplicates=True)
                 if [] == gC:
                     continue
             except IOError:
                 errorFiles += 1
                 continue
             distances, speeds = travel.getalldistancesandspeeds(gC)
-            travel_result = travel.istravelling(speeds, gC)
+            travel_result = travel.istravelling(speeds, gC, selection_factor=0.75)
             if travel_result[0]:
                 travel_clusters.append(gC)
             else:
