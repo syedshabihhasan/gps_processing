@@ -6,7 +6,10 @@ def getAllData(ipFile):
     f.close()
 
     data = data.split('\r')
-    data.pop(0)
+    titles = data.pop(0)
+    titles = titles.split(',')
+    for idx in range(len(titles)):
+        print str(idx) + ':' + titles[idx]
     try:
         data.remove('')
     except ValueError:
@@ -42,3 +45,10 @@ def getcleangpsdata(filename, accuracy_threshold = 500, remove_duplicates = True
         for idx in range(len(within_range_gps)):
             within_range_gps[idx] = [within_range_gps[idx][0], within_range_gps[idx][1]]
         return within_range_gps
+
+def filtersurveydata(survey_data, idx_to_filter_by, values_to_keep, convert_to_float = False):
+    survey_to_keep = []
+    for sample in survey_data:
+        if sample[idx_to_filter_by] in values_to_keep:
+            survey_to_keep.append(sample)
+    return survey_to_keep
