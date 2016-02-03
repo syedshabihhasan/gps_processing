@@ -26,7 +26,7 @@ def getPerParticipantData(data):
         perParticipantDict[pid].append(dataSample)
     return perParticipantDict
 
-def getcleangpsdata(filename, accuracy_threshold = 100):
+def getcleangpsdata(filename, accuracy_threshold = 500, remove_duplicates = True):
     gC = gps.readgpsfile(filename, False)
     within_range_gps = []
     # find all coordinates within the accuracy threshold
@@ -34,7 +34,8 @@ def getcleangpsdata(filename, accuracy_threshold = 100):
         if accuracy_threshold >= coord[2]:
             within_range_gps.append((coord[0], coord[1]))
     # remove duplicates
-    within_range_gps = list(set(within_range_gps))
+    if remove_duplicates:
+        within_range_gps = list(set(within_range_gps))
     if 1 >= len(within_range_gps):
         return []
     else:
