@@ -46,7 +46,7 @@ def getcleangpsdata(filename, accuracy_threshold = 500, remove_duplicates = True
             within_range_gps[idx] = [within_range_gps[idx][0], within_range_gps[idx][1]]
         return within_range_gps
 
-def filtersurveydata(survey_data, idx_to_filter_by, values_to_keep, convert_to_float = False):
+def filtersurveydata(survey_data, idx_to_filter_by, values_to_keep):
     survey_to_keep = []
     for sample in survey_data:
         if sample[idx_to_filter_by] in values_to_keep:
