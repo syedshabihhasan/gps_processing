@@ -27,7 +27,7 @@ def getPerParticipantData(data):
     return perParticipantDict
 
 def getcleangpsdata(filename, accuracy_threshold = 100):
-    gC = gps.readgpsfile(filename, True)
+    gC = gps.readgpsfile(filename, False)
     within_range_gps = []
     # find all coordinates within the accuracy threshold
     for coord in gC:
