@@ -5,32 +5,8 @@ import identifyClusters as clusters
 import createClusterPlot as plotcl
 from copy import deepcopy
 import basicDebug as bD
+import preprocessing as pr
 
-def getAllData(ipFile):
-    f = open(ipFile, 'r')
-    data = f.read()
-    f.close()
-
-    data = data.split('\r')
-    data.pop(0)
-    try:
-        data.remove('')
-    except ValueError:
-        pass
-
-    sanitizedData = []
-    for dataSample in data:
-        sanitizedData.append(dataSample.split(','))
-    return sanitizedData
-
-def getPerParticipantData(data):
-    perParticipantDict = {}
-    for dataSample in data:
-        pid = dataSample[0]
-        if not perParticipantDict.has_key(pid):
-            perParticipantDict[pid] = []
-        perParticipantDict[pid].append(dataSample)
-    return perParticipantDict
 
 def main():
     print 'entered main'
@@ -42,8 +18,8 @@ def main():
     marker_end = sys.argv[6]
     op_path = sys.argv[7]
     print 'arguments assigned variables'
-    data = getAllData(ipFile)
-    per_participant_data = getPerParticipantData(data)
+    data = pr.getAllData(ipFile)
+    per_participant_data = pr.getPerParticipantData(data)
     print 'per participant data extracted'
     participantList = per_participant_data.keys()
     print participantList
@@ -57,7 +33,9 @@ def main():
         for data_sample in participant_data:
             if '' is not data_sample[34]:
                 try:
-                    gC = gps.readgpsfile(data_sample[34])
+                    gC = pr.getcleangpsdata(data_sample[34])
+                    if [] == gC:
+                        continue
                 except IOError:
                     errorFiles += 1
                     continue
