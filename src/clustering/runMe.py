@@ -19,6 +19,11 @@ def main():
     op_path = sys.argv[7]
     print 'arguments assigned variables'
     data = pr.getAllData(ipFile)
+    print 'keeping only app init and live listening'
+    app_init_data = pr.filtersurveydata(data, 33, ['false'])
+    listening_data = pr.filtersurveydata(data, 7, ['true'])
+    data = app_init_data + listening_data
+    print 'done'
     per_participant_data = pr.getPerParticipantData(data)
     print 'per participant data extracted'
     participantList = per_participant_data.keys()
