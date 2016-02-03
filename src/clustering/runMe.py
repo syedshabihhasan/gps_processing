@@ -9,7 +9,7 @@ import preprocessing as pr
 
 
 def main():
-    print 'entered main'
+    print 'now entered main'
     ipFile = sys.argv[1]
     template_start = sys.argv[2]
     template_end = sys.argv[3]
