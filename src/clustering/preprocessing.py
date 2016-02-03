@@ -35,7 +35,7 @@ def getcleangpsdata(filename, accuracy_threshold = 100):
             within_range_gps.append((coord[0], coord[1]))
     # remove duplicates
     within_range_gps = list(set(within_range_gps))
-    if 1 == len(within_range_gps):
+    if 1 >= len(within_range_gps):
         return []
     else:
         for idx in range(len(within_range_gps)):

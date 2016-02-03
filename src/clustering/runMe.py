@@ -31,25 +31,24 @@ def main():
         participant_data = per_participant_data[pid]
         errorFiles = 0
         for data_sample in participant_data:
-            if '' is not data_sample[34]:
-                try:
-                    gC = pr.getcleangpsdata(data_sample[34])
-                    if [] == gC:
-                        continue
-                except IOError:
-                    errorFiles += 1
+            try:
+                gC = pr.getcleangpsdata(data_sample[34])
+                if [] == gC:
                     continue
-                distances, speeds = travel.getalldistancesandspeeds(gC)
-                travel_result = travel.istravelling(speeds, gC)
-                if travel_result[0]:
-                    travel_clusters.append(gC)
-                else:
-                    sc_nz = clusters.getclusters(gC)
-                    if sc_nz is not None:
-                        if not([] == sc_nz['sc']):
-                            stationary_clusters.append(sc_nz['sc'])
-                        if not([] == sc_nz['nz']):
-                            noise_markers += sc_nz['nz']
+            except IOError:
+                errorFiles += 1
+                continue
+            distances, speeds = travel.getalldistancesandspeeds(gC)
+            travel_result = travel.istravelling(speeds, gC)
+            if travel_result[0]:
+                travel_clusters.append(gC)
+            else:
+                sc_nz = clusters.getclusters(gC)
+                if sc_nz is not None:
+                    if not([] == sc_nz['sc']):
+                        stationary_clusters.append(sc_nz['sc'])
+                    if not([] == sc_nz['nz']):
+                        noise_markers += sc_nz['nz']
         temp_noise_markers = noise_markers
         median_cluster_size = clusters.getmedianclustersize(stationary_clusters)
         sc_nz = clusters.getclusters(temp_noise_markers, second_pass= True, median_cluster_size = median_cluster_size)
