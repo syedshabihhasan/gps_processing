@@ -50,7 +50,12 @@ def getconvexhull(all_coord):
     coords_to_use = []
     for coord in all_coord:
         coords_to_use.append([coord[0], coord[1]])
-    hull = ConvexHull(coords_to_use)
+    try:
+        hull = ConvexHull(coords_to_use)
+    except:
+        print 'An error occured: ', sys.exc_info()[0]
+        print coords_to_use
+        raise
     boundary_vertices_idx = list(hull.vertices)
     boundary_vertices = []
     for idx in boundary_vertices_idx:
