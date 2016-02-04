@@ -29,7 +29,7 @@ def getPerParticipantData(data):
         perParticipantDict[pid].append(dataSample)
     return perParticipantDict
 
-def getcleangpsdata(filename, accuracy_threshold = 500, remove_duplicates = True):
+def getcleangpsdata(filename, accuracy_threshold = 500, remove_duplicates = True, pid = 'EMA999', cid = '99', sid = '9999'):
     gC = gps.readgpsfile(filename, False)
     within_range_gps = []
     # find all coordinates within the accuracy threshold
@@ -43,7 +43,7 @@ def getcleangpsdata(filename, accuracy_threshold = 500, remove_duplicates = True
         return []
     else:
         for idx in range(len(within_range_gps)):
-            within_range_gps[idx] = [within_range_gps[idx][0], within_range_gps[idx][1]]
+            within_range_gps[idx] = [within_range_gps[idx][0], within_range_gps[idx][1], pid, cid, sid]
         return within_range_gps
 
 def filtersurveydata(survey_data, idx_to_filter_by, values_to_keep):

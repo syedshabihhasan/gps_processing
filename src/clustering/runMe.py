@@ -37,7 +37,7 @@ def main():
         errorFiles = 0
         for data_sample in participant_data:
             try:
-                gC = pr.getcleangpsdata(data_sample[34], remove_duplicates=True)
+                gC = pr.getcleangpsdata(data_sample[34], remove_duplicates=True, pid=data_sample[0], cid=data_sample[1], sid=data_sample[2])
                 if [] == gC:
                     continue
             except IOError:
@@ -82,7 +82,9 @@ def main():
             print 'returned cluster no: ' + str(returned_cluster_len)
         stationary_clusters = merged_clusters
         '''
-        bD.writecluster(pid, stationary_clusters)
+        bD.writecluster(pid, stationary_clusters, 'S')
+        bD.writecluster(pid, noise_markers, 'N')
+        bD.writecluster(pid, travel_clusters, 'T')
         print 'writing clusters, done'
         plotcl.createclusterplot(op_path + '/' + pid + '.html', stationary_clusters, travel_clusters, noise_markers, rect_t, rect_s, marker_end, template_start, template_end)
         print 'plotted'
