@@ -53,11 +53,11 @@ def filtersurveydata(survey_data, idx_to_filter_by, values_to_keep):
             survey_to_keep.append(sample)
     return survey_to_keep
 
-def removesinglevalues(clusters):
+def removesinglevalues(clusters, less_than = 2):
     n = range(len(clusters))
     to_remove = []
     for idx in n:
-        if 1 == len(clusters[idx]):
+        if less_than > len(clusters[idx]):
             to_remove.append(idx)
     for idx in to_remove:
         try:
