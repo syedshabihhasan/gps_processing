@@ -56,9 +56,11 @@ def filtersurveydata(survey_data, idx_to_filter_by, values_to_keep):
 def removesinglevalues(clusters, less_than = 2):
     n = range(len(clusters))
     to_remove = []
-    for idx in n:
-        if less_than > len(clusters[idx]):
+    idx = 0
+    for cluster in clusters:
+        if len(cluster) < less_than:
             to_remove.append(idx)
+        idx += 1
     for idx in to_remove:
         try:
             del clusters[idx]
