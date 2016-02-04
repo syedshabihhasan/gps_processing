@@ -2,7 +2,7 @@ from __future__ import division
 from math import radians, sin, cos, atan2, sqrt
 from scipy.spatial import ConvexHull
 from shapely.geometry import Polygon
-
+import sys
 
 def getspeedperhour(distance_travelled, time_in_seconds):
     return distance_travelled / (time_in_seconds / 3600)
@@ -54,7 +54,8 @@ def getconvexhull(all_coord):
         hull = ConvexHull(coords_to_use)
     except:
         print 'An error occured: ', sys.exc_info()[0]
-        print coords_to_use
+        print 'all_coords:', all_coord
+        print 'coords_to_use: ', coords_to_use
         raise
     boundary_vertices_idx = list(hull.vertices)
     boundary_vertices = []
