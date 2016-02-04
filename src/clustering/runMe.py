@@ -44,7 +44,7 @@ def main():
                 errorFiles += 1
                 continue
             distances, speeds = travel.getalldistancesandspeeds(gC)
-            travel_result = travel.istravelling(speeds, gC, selection_factor=0.75)
+            travel_result = travel.istravelling(speeds, gC, selection_factor=0.95)
             if travel_result[0]:
                 travel_clusters.append(gC)
             else:
