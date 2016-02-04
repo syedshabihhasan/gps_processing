@@ -66,12 +66,14 @@ def main():
               ' new # nz: ' + str(len(noise_markers)) + \
               ' median cluster size: ' + str(median_cluster_size)
         print 'Looking at merging clusters'
+        '''
         for idx in range(len(stationary_clusters)):
             stationary_clusters[idx] = gps.uniquevaluesincluster(stationary_clusters[idx])
         try:
             stationary_clusters.remove([])
         except ValueError:
             pass
+        '''
         returned_cluster_len = len(stationary_clusters)
         last_cluster_len = -1
         merged_clusters = deepcopy(stationary_clusters)
