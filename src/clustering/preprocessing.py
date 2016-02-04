@@ -52,3 +52,18 @@ def filtersurveydata(survey_data, idx_to_filter_by, values_to_keep):
         if sample[idx_to_filter_by] in values_to_keep:
             survey_to_keep.append(sample)
     return survey_to_keep
+
+def removesinglevalues(clusters):
+    n = range(len(clusters))
+    to_remove = []
+    for idx in n:
+        if 1 == len(clusters[idx]):
+            to_remove.append(idx)
+    for idx in to_remove:
+        try:
+            del clusters[idx]
+        except IndexError:
+            pass
+    print 'removed ' + str(len(to_remove)) + ' single values stationary clusters'
+    return clusters
+

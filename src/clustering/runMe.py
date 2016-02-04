@@ -74,6 +74,7 @@ def main():
         except ValueError:
             pass
         '''
+        stationary_clusters = pr.removesinglevalues(stationary_clusters)
         returned_cluster_len = len(stationary_clusters)
         last_cluster_len = -1
         merged_clusters = deepcopy(stationary_clusters)
@@ -85,6 +86,8 @@ def main():
             else:
                 last_cluster_len = returned_cluster_len
             to_merge_with = clusters.intersectingclusters(merged_clusters)
+            for tmw in to_merge_with:
+                print tmw
             merged_clusters = clusters.mergeclusters(merged_clusters, to_merge_with)
             returned_cluster_len = len(merged_clusters)
             print 'returned cluster len: ' + str(returned_cluster_len) + ' last cluster len: ' + str(last_cluster_len)
