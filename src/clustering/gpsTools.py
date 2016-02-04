@@ -47,8 +47,15 @@ def getboundary(all_coord):
 
 
 def getconvexhull(all_coord):
-    hull = ConvexHull(all_coord)
-    return hull.points.tolist()
+    coords_to_use = []
+    for coord in all_coord:
+        coords_to_use.append([coord[0], coord[1]])
+    hull = ConvexHull(coords_to_use)
+    boundary_vertices_idx = list(hull.vertices)
+    boundary_vertices = []
+    for idx in boundary_vertices_idx:
+        boundary_vertices.append(coords_to_use[idx])
+    return boundary_vertices
 
 
 def readgpsfile(filename, ignore_accuracy=True):
@@ -69,7 +76,13 @@ def readgpsfile(filename, ignore_accuracy=True):
     return final_coords
 
 
-def dohullsintersect(hull1, hull2):
+def dohullsintersect(hull1_coord, hull2_coord):
+    hull1 = []
+    hull2 = []
+    for coord in hull1_coord:
+        hull1.append([hull1_coord[0], hull1_coord[1]])
+    for coord in hull2_coord:
+        hull2.append([hull2_coord[0], hull2_coord[1]])
     hull1 = Polygon(hull1)
     hull2 = Polygon(hull2)
     return hull1.intersects(hull2)

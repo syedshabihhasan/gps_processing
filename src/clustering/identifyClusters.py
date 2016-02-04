@@ -57,16 +57,23 @@ def mergeclusters(all_clusters, to_merge_with):
     worked_with = np.zeros((n, 1)).tolist()
     for i in range(n):
         disconnected_cluster = 0
+        merged_cluster = []
+        # if that particular cluster has not been looked at, select it, and check it with every other
         if 0 == worked_with[i]:
             merged_cluster = all_clusters[i]
             for j in range(n):
-                if 1 == to_merge_with[i][j]:
+                if (1 == to_merge_with[i][j]) and (0 == worked_with[j]):
                     worked_with[i] = 1
                     worked_with[j] = 1
                     merged_cluster = merged_cluster + all_clusters[j]
                 else:
                     disconnected_cluster += 1
-        if (0 == worked_with[i]) and (n == disconnected_cluster):
-            merged_clusters.append(all_clusters[j])
-            worked_with[i] = 1
+            # if there were no clusters that intersected with this cluster
+            if (0 == worked_with[i]) and (n == disconnected_cluster):
+                worked_with[i] = 1
+            # if the cluster has been worked on, add it to the merged clusters list
+            if 1 == worked_with[i]:
+                merged_clusters.append(merged_cluster)
+        else:
+            continue
     return merged_clusters
