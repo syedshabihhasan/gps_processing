@@ -64,15 +64,8 @@ def main():
         print 'second pass, original # nz: ' + str(len(temp_noise_markers)) + \
               ' new # nz: ' + str(len(noise_markers)) + \
               ' median cluster size: ' + str(median_cluster_size)
+        '''
         print 'Looking at merging clusters'
-        '''
-        for idx in range(len(stationary_clusters)):
-            stationary_clusters[idx] = gps.uniquevaluesincluster(stationary_clusters[idx])
-        try:
-            stationary_clusters.remove([])
-        except ValueError:
-            pass
-        '''
         stationary_clusters = pr.removesinglevalues(stationary_clusters, less_than=4)
         returned_cluster_len = len(stationary_clusters)
         last_cluster_len = -1
@@ -89,6 +82,7 @@ def main():
             returned_cluster_len = len(merged_clusters)
             print 'returned cluster len: ' + str(returned_cluster_len) + ' last cluster len: ' + str(last_cluster_len)
         stationary_clusters = merged_clusters
+        '''
         bD.writecluster(pid, stationary_clusters, 'S')
         bD.writecluster(pid, noise_markers, 'N')
         bD.writecluster(pid, travel_clusters, 'T')
