@@ -54,9 +54,7 @@ def intersectingclusters(all_clusters):
 def mergeclusters(all_clusters, to_merge_with):
     merged_clusters = []
     n = len(all_clusters)
-    worked_with = []
-    for i in range(n):
-        worked_with.append(0)
+    worked_with = [0 for idx in range(n)]
     for i in range(n):
         disconnected_cluster = 0
         merged_cluster = []
