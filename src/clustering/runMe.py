@@ -64,7 +64,7 @@ def main():
         print 'second pass, original # nz: ' + str(len(temp_noise_markers)) + \
               ' new # nz: ' + str(len(noise_markers)) + \
               ' median cluster size: ' + str(median_cluster_size)
-        '''
+
         print 'Looking at merging clusters'
         stationary_clusters = pr.removesinglevalues(stationary_clusters, less_than=4)
         returned_cluster_len = len(stationary_clusters)
@@ -72,9 +72,13 @@ def main():
         merged_clusters = deepcopy(stationary_clusters)
         print 'merging clusters'
         firstpass = True
+        old_clusters = []
         while not (returned_cluster_len == last_cluster_len):
+            old_clusters = merged_clusters
             if firstpass:
                 firstpass = False
+                last_cluster_len = len(merged_clusters)
+                merged_clusters = pr.removesinglevalues(merged_clusters, less_than=4)
             else:
                 last_cluster_len = returned_cluster_len
             to_merge_with = clusters.intersectingclusters(merged_clusters)
@@ -82,7 +86,6 @@ def main():
             returned_cluster_len = len(merged_clusters)
             print 'returned cluster len: ' + str(returned_cluster_len) + ' last cluster len: ' + str(last_cluster_len)
         stationary_clusters = merged_clusters
-        '''
         bD.writecluster(pid, stationary_clusters, 'S')
         bD.writecluster(pid, noise_markers, 'N')
         bD.writecluster(pid, travel_clusters, 'T')
