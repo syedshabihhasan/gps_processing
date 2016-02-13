@@ -106,3 +106,15 @@ def uniquevaluesincluster(cluster_coords):
         return coord_tuples
     else:
         return []
+
+def getdistancematrix(coords):
+    dist_matrix = []
+    for i in range(len(coords)):
+        temp = []
+        for j in range(len(coords)):
+            if j == i:
+                temp.append(0)
+            else:
+                temp.append(getdistanceinkm(coords[i], coords[j]))
+        dist_matrix.append(temp)
+    return dist_matrix

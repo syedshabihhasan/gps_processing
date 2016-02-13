@@ -2,6 +2,7 @@ from __future__ import division
 import gpsTools as gps
 from math import floor
 import numpy as np
+from sklearn.cluster import DBSCAN
 
 def getmedianclustersize(clusters):
     n = []
@@ -12,7 +13,7 @@ def getmedianclustersize(clusters):
 def getdistance(gps_coord, all_coords):
     return [gps.getdistanceinkm(gps_coord, all_coords[i]) for i in range(len(all_coords))]
 
-def getclusters(gps_coords, second_pass = False, max_dist_in_meters=20, min_no_samples = 3, median_cluster_size = 10):
+def getclusters(gps_coords, second_pass = False, max_dist_in_meters=20, min_no_samples = 3, median_cluster_size = 5):
     final_clusters = {}
     final_clusters['sc'] = []
     final_clusters['nz'] = []
@@ -77,3 +78,30 @@ def mergeclusters(all_clusters, to_merge_with):
         else:
             continue
     return merged_clusters
+
+def getdbscanclusters(gps_coords, second_pass = False, max_dist_in_meters=20, min_no_samples = 3, median_cluster_size = 5):
+    n = len(gps_coords)
+    if min_no_samples > n:
+        final_clusters = None
+    else:
+        distance_matrix = gps.getdistancematrix(gps_coords)
+        if second_pass:
+            min_no_samples = 5 if median_cluster_size > 5 else median_cluster_size
+        db_obj = DBSCAN(eps=max_dist_in_meters/1000, min_samples=min_no_samples, metric= 'precomputed').fit(distance_matrix)
+        cluster_idx = db_obj.labels_.tolist()
+        cluster = {}
+        assert len(cluster_idx) == len(gps_coords), "something is wrong, #cluster: "+str(len(cluster_idx))+", #coords: " \
+                                                    + str(len(gps_coords))
+        for idx in range(len(cluster_idx)):
+            if cluster_idx[idx] not in cluster:
+                cluster[cluster_idx[idx]] = []
+            cluster[cluster_idx[idx]].append(gps_coords[idx])
+        final_clusters = {}
+        final_clusters['sc'] = []
+        final_clusters['nz'] = []
+        for key in cluster.keys():
+            if not (-1 == key):
+                final_clusters['sc'].append(cluster[key])
+            else:
+                final_clusters['nz'] = cluster[-1]
+    return final_clusters
