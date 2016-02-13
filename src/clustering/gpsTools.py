@@ -53,7 +53,7 @@ def getconvexhull(all_coord):
     try:
         hull = ConvexHull(coords_to_use)
     except:
-        print 'An error occured: ', sys.exc_info()[0]
+        #print 'An error occured: ', sys.exc_info()[0]
         print 'all_coords:', all_coord
         print 'coords_to_use: ', coords_to_use
         raise
