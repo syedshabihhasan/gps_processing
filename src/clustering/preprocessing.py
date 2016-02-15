@@ -22,7 +22,7 @@ def getAllData(ipFile):
 
 def getPerParticipantData(data):
     perParticipantDict = {}
-    withdrawn = ['EMA17', 'EMA23', 'EMA30', 'EMA49']
+    withdrawn = ['EMA17', 'EMA23', 'EMA30', 'EMA49', 'EMA54', 'EMA59']
     for dataSample in data:
         pid = dataSample[0]
         if pid in withdrawn:
