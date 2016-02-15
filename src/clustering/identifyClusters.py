@@ -128,6 +128,4 @@ def getdbscanclusters(gps_coords, eps_list=[20], min_sample_list=[3]):
                 final_clusters['sc'].append(cluster[key])
             else:
                 final_clusters['nz'] = cluster[-1]
-        distance_matrix = np.array(distance_matrix)
-        print 'Silhouette Coefficient: ' + str(metrics.silhouette_score(distance_matrix, db_obj.labels_, metric='precomputed'))
     return final_clusters
