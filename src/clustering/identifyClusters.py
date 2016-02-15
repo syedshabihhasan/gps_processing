@@ -12,7 +12,7 @@ def optimizesilhouette(ipValue, eps_list, min_sample_list, metricString):
     temp_ip_value = np.array(ipValue)
     for eps in eps_list:
         for min_samples in min_sample_list:
-            dbscan_obj = DBSCAN(eps/1000, min_samples, metric=metricString).fit(ipValue)
+            dbscan_obj = DBSCAN(eps / 1000, min_samples, metric=metricString).fit(ipValue)
             silhouette_value = metrics.silhouette_score(temp_ip_value, dbscan_obj.labels_, metric=metricString)
             print 'eps: ', eps, 'min_samples: ', min_samples, 'silhouette score: ', silhouette_value
             if silhouette_value > best_silhouette[2]:
@@ -21,6 +21,7 @@ def optimizesilhouette(ipValue, eps_list, min_sample_list, metricString):
                 best_dbscan_obj = dbscan_obj
     print 'best silhouette value: ', best_silhouette
     return best_dbscan_obj
+
 
 def getmedianclustersize(clusters):
     n = []
@@ -114,7 +115,7 @@ def getdbscanclusters(gps_coords, eps_list=[20], min_sample_list=[3]):
         cluster_idx = db_obj.labels_.tolist()
         cluster = {}
         assert len(cluster_idx) == len(gps_coords), "something is wrong, #cluster: " + str(
-            len(cluster_idx)) + ", #coords: " \
+                len(cluster_idx)) + ", #coords: " \
                                                     + str(len(gps_coords))
         for idx in range(len(cluster_idx)):
             if cluster_idx[idx] not in cluster:
