@@ -59,9 +59,9 @@ def main():
             if not ([] == sc_nz['nz']):
                 noise_markers = sc_nz['nz']
         print 'stationary clusters: ' + str(len(stationary_clusters)) + ', travel clusters: ' + str(len(travel_clusters))
-        bD.writecluster(pid, stationary_clusters, 'S')
-        bD.writecluster(pid, noise_markers, 'N')
-        bD.writecluster(pid, travel_clusters, 'T')
+        bD.writecluster(pid, stationary_clusters, op_path, 'S')
+        bD.writecluster(pid, noise_markers, op_path, 'N')
+        bD.writecluster(pid, travel_clusters, op_path, 'T')
         print 'writing clusters, done'
         plotcl.createclusterplot(op_path + '/' + pid + '.html', stationary_clusters, travel_clusters, noise_markers, rect_t, rect_s, marker_end, template_start, template_end)
         print 'plotted'
