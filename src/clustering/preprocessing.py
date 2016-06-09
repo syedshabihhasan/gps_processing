@@ -27,7 +27,7 @@ def getPerParticipantData(data):
         pid = dataSample[0]
         if pid in withdrawn:
             continue
-        if not perParticipantDict.has_key(pid):
+        if pid not in perParticipantDict:
             perParticipantDict[pid] = []
         perParticipantDict[pid].append(dataSample)
     return perParticipantDict
@@ -41,7 +41,8 @@ def getcleangpsdata(filename, accuracy_threshold = 500, remove_duplicates = True
             within_range_gps.append((coord[0], coord[1]))
     # remove duplicates
     if remove_duplicates:
-        within_range_gps = list(set(within_range_gps))
+        # within_range_gps = list(set(within_range_gps))
+        pass
     if 1 >= len(within_range_gps):
         return []
     else:

@@ -110,11 +110,16 @@ def uniquevaluesincluster(cluster_coords):
 def getdistancematrix(coords):
     dist_matrix = []
     for i in range(len(coords)):
-        temp = []
+        temp = [0.0]*len(coords)
         for j in range(len(coords)):
             if j == i:
-                temp.append(0)
+                break
             else:
-                temp.append(getdistanceinkm(coords[i], coords[j]))
+                temp[j] = getdistanceinkm(coords[i], coords[j])
+                dist_matrix[j][i] = temp[j]
         dist_matrix.append(temp)
+    # for i in range(len(coords)):
+    #     for j in range(len(coords)):
+    #         if i > j:
+    #             dist_matrix[i][j] = dist_matrix[j][i]
     return dist_matrix
