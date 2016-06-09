@@ -2,7 +2,6 @@ from __future__ import division
 from math import radians, sin, cos, atan2, sqrt
 from scipy.spatial import ConvexHull
 from shapely.geometry import Polygon
-import sys
 
 def getspeedperhour(distance_travelled, time_in_seconds):
     return distance_travelled / (time_in_seconds / 3600)
@@ -115,7 +114,7 @@ def getdistancematrix(coords):
             if j == i:
                 break
             else:
-                temp[j] = getdistanceinkm(coords[i], coords[j])
+                temp[j] = getdistanceinkm(coords[i], coords[j]) * 1000.0
                 dist_matrix[j][i] = temp[j]
         dist_matrix.append(temp)
     # for i in range(len(coords)):
