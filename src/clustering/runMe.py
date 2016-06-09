@@ -48,8 +48,8 @@ def main():
                 travel_clusters.append(gC)
             else:
                 stationary_points += gC
-        eps_list = range(20, 55, 5)
-        min_sample_list = range(3, 13, 2)
+        eps_list = range(20, 51, 10)
+        min_sample_list = [3, 5, 7]
         print 'collected all points, clustering, eps_list:', eps_list, ', min_sample_list:', min_sample_list
         sc_nz = clusters.getdbscanclusters(stationary_points, eps_list, min_sample_list)
         print 'done'

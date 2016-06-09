@@ -12,7 +12,7 @@ def optimizesilhouette(ipValue, eps_list, min_sample_list, metricString):
     temp_ip_value = np.array(ipValue)
     for eps in eps_list:
         for min_samples in min_sample_list:
-            dbscan_obj = DBSCAN(eps / 1000, min_samples, metric=metricString).fit(ipValue)
+            dbscan_obj = DBSCAN(eps / 1000.0, min_samples, metric=metricString).fit(ipValue)
             silhouette_value = metrics.silhouette_score(temp_ip_value, dbscan_obj.labels_, metric=metricString)
             print 'eps: ', eps, 'min_samples: ', min_samples, 'silhouette score: ', silhouette_value
             if silhouette_value > best_silhouette[2]:
