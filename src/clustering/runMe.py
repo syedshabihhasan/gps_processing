@@ -43,9 +43,13 @@ def main():
                 errorFiles += 1
                 continue
             distances, speeds = travel.getalldistancesandspeeds(gC)
-            travel_result = travel.istravelling(speeds, gC, selection_factor=0.95)
+            travel_result = travel.istravelling(speeds, gC, selection_factor=0.7)
             if travel_result[0]:
-                travel_clusters.append(gC)
+                # travel_clusters.append(gC)
+                if not 0 == len(travel_result[1]):
+                    travel_clusters.append(travel_result[1])
+                if not 0 == len(travel_result[2]):
+                    stationary_points += travel_result[2]
             else:
                 stationary_points += gC
         eps_list = range(20, 51, 10)
