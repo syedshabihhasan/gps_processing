@@ -96,7 +96,7 @@ class gps_service:
             most_common_label = label_counts.most_common(1)
             self.__stationary_cluster_label.append(most_common_label[0][0])
         return self.__travel_clusters, self.__stationary_clusters, self.__stationary_cluster_boundaries, \
-               self.__stationary_cluster_label, self.__noise_markers
+               self.__stationary_cluster_label, self.__noise_markers, self.__error_files
 
     def __init__(self):
         pass

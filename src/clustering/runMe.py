@@ -58,7 +58,7 @@ def main():
         cluster_service.set_pid(pid)
         cluster_service.set_participant_data(per_participant_data[pid])
         travel_clusters, stationary_clusters, stationary_cluster_boundaries, \
-        stationary_cluster_labels, noise_markers = cluster_service.get_travelling_and_stationary_clusters()
+        stationary_cluster_labels, noise_markers, errorFiles = cluster_service.get_travelling_and_stationary_clusters()
         # travel_clusters = []
         # stationary_clusters = []
         # stationary_points = []
