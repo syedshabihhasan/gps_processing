@@ -49,7 +49,7 @@ class gps_service:
                 self.__internal_location_info[(data_sample[SurveyConstants.PATIENT_ID],
                                                data_sample[SurveyConstants.CONDITION_ID],
                                                data_sample[SurveyConstants.SESSION_ID])] = \
-                    LocationContext[data_sample[SurveyConstants.LOCATION_CONTEXT]]
+                    LocationContext.LOCATION_CONTEXT_VALUES[data_sample[SurveyConstants.LOCATION_CONTEXT]]
                 gps_coords_clean = pr.getcleangpsdata(data_sample[34], remove_duplicates=True,
                                                       pid=data_sample[0], cid=data_sample[1], sid=data_sample[2])
                 if not gps_coords_clean:
