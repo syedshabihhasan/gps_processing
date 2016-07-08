@@ -85,12 +85,14 @@ class gps_service:
                 self.__noise_markers = sc_nz['nz']
         print 'stationary clusters: ' + str(len(self.__stationary_clusters)) + ', travel clusters: ' + str(
             len(self.__travel_clusters))
+        x = 0
         for cluster_points in self.__stationary_clusters:
+            x += 1
             try:
                 boundary_points = gps.getconvexhull(cluster_points)
             except:
-                print 'Error getting the convex hull of the cluster. Error Message: \n\n', sys.exc_info()[0]
-                self.__stationary_cluster_label.append("Error")
+                print 'Error getting the convex hull of the cluster. cluster #', x
+                self.__stationary_cluster_label.append("Error,C-"+x)
                 continue
             self.__stationary_cluster_boundaries.append(boundary_points)
             cluster_point_types = []
