@@ -89,7 +89,7 @@ class gps_service:
             try:
                 boundary_points = gps.getconvexhull(cluster_points)
             except:
-                print 'Error getting the convex hull of the cluster. Error Message: '+sys.exc_info()[0]
+                print 'Error getting the convex hull of the cluster. Error Message: \n\n', sys.exc_info()[0]
                 self.__stationary_cluster_label.append("Error")
                 continue
             self.__stationary_cluster_boundaries.append(boundary_points)
