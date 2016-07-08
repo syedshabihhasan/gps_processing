@@ -101,12 +101,13 @@ def main():
         #         noise_markers = sc_nz['nz']
         # print 'stationary clusters: ' + str(len(stationary_clusters)) + ', travel clusters: ' + str(
         #     len(travel_clusters))
-        bD.writecluster(pid, stationary_clusters, output_path, 'S')
+        bD.writecluster(pid, stationary_clusters, output_path, 'S', stationary_cluster_labels)
         bD.writecluster(pid, noise_markers, output_path, 'N')
         bD.writecluster(pid, travel_clusters, output_path, 'T')
         print 'writing clusters, done'
         plotcl.createclusterplot(output_path + '/' + pid + '.html', stationary_clusters, travel_clusters, noise_markers,
-                                 rectangle_travel, rectangle_stationary, marker_end, template_start, template_end)
+                                 rectangle_travel, rectangle_stationary, marker_end, template_start, template_end,
+                                 stationary_cluster_labels)
         print 'plotted'
         print 'there was an error opening a few files, total number :' + str(errorFiles)
 

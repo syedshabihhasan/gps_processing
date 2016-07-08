@@ -1,14 +1,17 @@
 import os
 
 
-def writecluster(pid, clusters, op_path, c_type='S'):
+def writecluster(pid, clusters, op_path, c_type='S', cluster_label=None):
     toWrite = ''
     if 'S' is c_type or 'T' is c_type:
-        for cluster in clusters:
+        for c_idx in range(len(clusters)):
+            cluster = clusters[c_idx]
             toWrite += '\n'
             for coord in cluster:
                 for idx in range(len(coord)):
                     toWrite += str(coord[idx]) + ' '
+                if cluster_label is not None:
+                    toWrite += cluster_label[c_idx]+' '
                 toWrite += '\n'
     elif 'N' is c_type:
         for coord in clusters:
