@@ -5,6 +5,7 @@ import gpsTools as gps
 import collections
 from GPSConstants import SurveyConstants
 from GPSConstants import LocationContext
+import sys
 
 class gps_service:
 
@@ -85,7 +86,12 @@ class gps_service:
         print 'stationary clusters: ' + str(len(self.__stationary_clusters)) + ', travel clusters: ' + str(
             len(self.__travel_clusters))
         for cluster_points in self.__stationary_clusters:
-            boundary_points = gps.getconvexhull(cluster_points)
+            try:
+                boundary_points = gps.getconvexhull(cluster_points)
+            except:
+                print 'Error getting the convex hull of the cluster. Error Message: '+sys.exc_info()[0]
+                self.__stationary_cluster_label.append("Error")
+                continue
             self.__stationary_cluster_boundaries.append(boundary_points)
             cluster_point_types = []
             for cluster_point in cluster_points:
