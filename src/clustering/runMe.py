@@ -1,22 +1,45 @@
-import sys
+
 import identifyTravel as travel
 import identifyClusters as clusters
 import createClusterPlot as plotcl
 import basicDebug as bD
 import preprocessing as pr
+import argparse
 
 
 def main():
     print 'now entered main'
-    ipFile = sys.argv[1]
-    template_start = sys.argv[2]
-    template_end = sys.argv[3]
-    rect_t = sys.argv[4]
-    rect_s = sys.argv[5]
-    marker_end = sys.argv[6]
-    op_path = sys.argv[7]
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-i', '-I', 'input CSV file')
+    parser.add_argument('-ts', '-TS', 'template start')
+    parser.add_argument('-te', '-TE', 'template end')
+    parser.add_argument('-rs', '-RS', 'rectangle stationary')
+    parser.add_argument('-rt', '-RT', 'rectangle travel')
+    parser.add_argument('-me', '-ME', 'marker end')
+    parser.add_argument('-o', '-O', 'output path')
+
+    args = parser.parse_args()
+
+    # input_file = sys.argv[1]
+    # template_start = sys.argv[2]
+    # template_end = sys.argv[3]
+    # rectangle_travel = sys.argv[4]
+    # rectangle_stationary = sys.argv[5]
+    # marker_end = sys.argv[6]
+    # output_path = sys.argv[7]
+
+    input_file = args.i
+    template_start = args.ts
+    template_end = args.te
+    rectangle_travel = args.rt
+    rectangle_stationary = args.rs
+    marker_end = args.me
+    output_path = args.o
+
     print 'arguments assigned variables'
-    data = pr.getAllData(ipFile)
+    data = pr.getAllData(input_file)
     print 'keeping only app init and live listening'
     app_init_data = pr.filtersurveydata(data, 33, ['false'])
     listening_data = pr.filtersurveydata(data, 7, ['true'])
@@ -24,10 +47,10 @@ def main():
     print 'done'
     per_participant_data = pr.getPerParticipantData(data)
     print 'per participant data extracted'
-    participantList = per_participant_data.keys()
-    print participantList
-    for pid in participantList:
-        print '\n\npid: '+ pid
+    participant_list = per_participant_data.keys()
+    print participant_list
+    for pid in participant_list:
+        print '\n\npid: ' + pid
         travel_clusters = []
         stationary_clusters = []
         stationary_points = []
@@ -36,24 +59,30 @@ def main():
         errorFiles = 0
         for data_sample in participant_data:
             try:
-                gC = pr.getcleangpsdata(data_sample[34], remove_duplicates=True, pid=data_sample[0], cid=data_sample[1], sid=data_sample[2])
-                if [] == gC:
+                gps_coords_clean = pr.getcleangpsdata(data_sample[34], remove_duplicates=True,
+                                                      pid=data_sample[0], cid=data_sample[1], sid=data_sample[2])
+                if not gps_coords_clean:
                     continue
             except IOError:
                 errorFiles += 1
                 continue
-            distances, speeds = travel.getalldistancesandspeeds(gC)
-            travel_result = travel.istravelling(speeds, gC, selection_factor=0.7)
+            # TODO: the speed limit has to be decided, are people walking also considered traveling?
+            distances, speeds = travel.getalldistancesandspeeds(gps_coords_clean)
+            travel_result = travel.istravelling(speeds, gps_coords_clean, selection_factor=0.7)
             if travel_result[0]:
-                # travel_clusters.append(gC)
+                # travel_clusters.append(gps_coords_clean)
                 if not 0 == len(travel_result[1]):
                     travel_clusters.append(travel_result[1])
                 if not 0 == len(travel_result[2]):
                     stationary_points += travel_result[2]
             else:
-                stationary_points += gC
+                stationary_points += gps_coords_clean
         eps_list = range(20, 51, 10)
         min_sample_list = [3, 5, 7]
+        '''
+        since all the stationary points are being collected for a given participants, the hull intersection functions
+        never get called.
+        '''
         print 'collected all points, clustering, eps_list:', eps_list, ', min_sample_list:', min_sample_list
         sc_nz = clusters.getdbscanclusters(stationary_points, eps_list, min_sample_list)
         print 'done'
@@ -62,17 +91,17 @@ def main():
                 stationary_clusters = sc_nz['sc']
             if not ([] == sc_nz['nz']):
                 noise_markers = sc_nz['nz']
-        print 'stationary clusters: ' + str(len(stationary_clusters)) + ', travel clusters: ' + str(len(travel_clusters))
-        bD.writecluster(pid, stationary_clusters, op_path, 'S')
-        bD.writecluster(pid, noise_markers, op_path, 'N')
-        bD.writecluster(pid, travel_clusters, op_path, 'T')
+        print 'stationary clusters: ' + str(len(stationary_clusters)) + ', travel clusters: ' + str(
+            len(travel_clusters))
+        bD.writecluster(pid, stationary_clusters, output_path, 'S')
+        bD.writecluster(pid, noise_markers, output_path, 'N')
+        bD.writecluster(pid, travel_clusters, output_path, 'T')
         print 'writing clusters, done'
-        plotcl.createclusterplot(op_path + '/' + pid + '.html', stationary_clusters, travel_clusters, noise_markers, rect_t, rect_s, marker_end, template_start, template_end)
+        plotcl.createclusterplot(output_path + '/' + pid + '.html', stationary_clusters, travel_clusters, noise_markers,
+                                 rectangle_travel, rectangle_stationary, marker_end, template_start, template_end)
         print 'plotted'
-        print 'there was an error openeing a few files, total number :' + str(errorFiles)
+        print 'there was an error opening a few files, total number :' + str(errorFiles)
+
 
 if __name__ == "__main__":
-    if not (8 == len(sys.argv)):
-        print 'Usage: python runMe.py <survey file (csv)> <template_start> <template_end> <rectangle_stationary> <rectangle_travel> <marker_end> <op path>'
-    else:
-        main()
+    main()

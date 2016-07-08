@@ -117,8 +117,4 @@ def getdistancematrix(coords):
                 temp[j] = getdistanceinkm(coords[i], coords[j]) * 1000.0
                 dist_matrix[j][i] = temp[j]
         dist_matrix.append(temp)
-    # for i in range(len(coords)):
-    #     for j in range(len(coords)):
-    #         if i > j:
-    #             dist_matrix[i][j] = dist_matrix[j][i]
     return dist_matrix
