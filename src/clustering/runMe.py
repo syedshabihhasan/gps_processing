@@ -13,13 +13,13 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-i', '-I', 'input CSV file')
-    parser.add_argument('-ts', '-TS', 'template start')
-    parser.add_argument('-te', '-TE', 'template end')
-    parser.add_argument('-rs', '-RS', 'rectangle stationary')
-    parser.add_argument('-rt', '-RT', 'rectangle travel')
-    parser.add_argument('-me', '-ME', 'marker end')
-    parser.add_argument('-o', '-O', 'output path')
+    parser.add_argument('-i', '-I', help='input CSV file')
+    parser.add_argument('-ts', '-TS', help='template start')
+    parser.add_argument('-te', '-TE', help='template end')
+    parser.add_argument('-rs', '-RS', help='rectangle stationary')
+    parser.add_argument('-rt', '-RT', help='rectangle travel')
+    parser.add_argument('-me', '-ME', help='marker end')
+    parser.add_argument('-o', '-O', help='output path')
 
     args = parser.parse_args()
 
