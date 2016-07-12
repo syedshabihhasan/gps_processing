@@ -3,6 +3,7 @@ from math import radians, sin, cos, atan2, sqrt
 from scipy.spatial import ConvexHull
 from shapely.geometry import Polygon
 
+
 def getspeedperhour(distance_travelled, time_in_seconds):
     return distance_travelled / (time_in_seconds / 3600)
 
@@ -45,6 +46,21 @@ def getboundary(all_coord):
     return [min_lat, min_lon], [max_lat, max_lon]
 
 
+def check_polygon_membership(cluster_boundary, points_to_check):
+    cluster_polygon = Polygon(cluster_boundary)
+    point_in_cluster = []
+    for coord in points_to_check:
+        point_in_cluster.append(cluster_polygon.contains(coord))
+    return point_in_cluster
+
+
+def check_polygon_memberships(cluster_boundaries, points_to_check):
+    cluster_decisions = []
+    for cluster_boundary in cluster_boundaries:
+        cluster_decisions.append(check_polygon_membership(cluster_boundary, points_to_check))
+    return cluster_decisions
+
+
 def getconvexhull(all_coord):
     coords_to_use = []
     for coord in all_coord:
@@ -52,7 +68,7 @@ def getconvexhull(all_coord):
     try:
         hull = ConvexHull(coords_to_use)
     except:
-        #print 'An error occured: ', sys.exc_info()[0]
+        # print 'An error occured: ', sys.exc_info()[0]
         print 'all_coords:', all_coord
         print 'coords_to_use: ', coords_to_use
         raise
@@ -106,10 +122,11 @@ def uniquevaluesincluster(cluster_coords):
     else:
         return []
 
+
 def getdistancematrix(coords):
     dist_matrix = []
     for i in range(len(coords)):
-        temp = [0.0]*len(coords)
+        temp = [0.0] * len(coords)
         for j in range(len(coords)):
             if j == i:
                 break
