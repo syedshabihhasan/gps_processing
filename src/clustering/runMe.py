@@ -4,7 +4,6 @@ import basicDebug as bD
 import preprocessing as pr
 import argparse
 from gpsService import gps_service
-import pickle
 
 
 def main():
@@ -44,8 +43,12 @@ def main():
     print 'per participant data extracted'
     participant_list = per_participant_data.keys()
     print participant_list
+    min_data_sample_no = 5
     for pid in participant_list:
         print '\n\npid: ' + pid
+        if len(per_participant_data[pid]) < min_data_sample_no:
+            print '# of samples < min_data_sample_no ('+str(min_data_sample_no)+'), skipping pid'
+            continue
         cluster_service.clean_house()
         cluster_service.set_pid(pid)
         cluster_service.set_participant_data(per_participant_data[pid])

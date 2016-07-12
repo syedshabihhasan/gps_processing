@@ -116,6 +116,11 @@ def getdbscanclusters(gps_coords, eps_list=[20], min_sample_list=[3]):
         distance_matrix = gps.getdistancematrix(gps_coords)
         print 'done, starting optimization'
         db_obj = optimizesilhouette(distance_matrix, eps_list, min_sample_list, 'precomputed')
+        if db_obj is None:
+            if len(gps_coords) > 0:
+                return {'sc': [], 'nz': gps_coords}
+            else:
+                return None
         cluster_idx = db_obj.labels_.tolist()
         cluster = {}
         assert len(cluster_idx) == len(gps_coords), "something is wrong, #cluster: " + str(
@@ -125,9 +130,7 @@ def getdbscanclusters(gps_coords, eps_list=[20], min_sample_list=[3]):
             if cluster_idx[idx] not in cluster:
                 cluster[cluster_idx[idx]] = []
             cluster[cluster_idx[idx]].append(gps_coords[idx])
-        final_clusters = {}
-        final_clusters['sc'] = []
-        final_clusters['nz'] = []
+        final_clusters = {'sc': [], 'nz': []}
         for key in cluster.keys():
             if not (-1 == key):
                 final_clusters['sc'].append(cluster[key])
