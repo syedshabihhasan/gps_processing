@@ -1,4 +1,5 @@
 import os
+import pickle
 
 
 def writecluster(pid, clusters, op_path, c_type='S', cluster_label=None):
@@ -11,7 +12,7 @@ def writecluster(pid, clusters, op_path, c_type='S', cluster_label=None):
                 for idx in range(len(coord)):
                     toWrite += str(coord[idx]) + ' '
                 if cluster_label is not None:
-                    toWrite += cluster_label[c_idx]+' '
+                    toWrite += cluster_label[c_idx] + ' '
                 toWrite += '\n'
     elif 'N' is c_type:
         for coord in clusters:
@@ -24,3 +25,8 @@ def writecluster(pid, clusters, op_path, c_type='S', cluster_label=None):
     f = open(final_path + pid + '_' + c_type + '.cluster', 'w')
     f.write(toWrite)
     f.close()
+
+
+def write_variable(variable, filename, op_path):
+    with open(op_path + '/debug/' + filename, 'wb') as f:
+        pickle.dump(variable, f)
