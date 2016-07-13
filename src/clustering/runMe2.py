@@ -89,13 +89,20 @@ def main():
                             final_result[pid][(n_pid, cid, sid)].append((cluster_labels[idx], cluster_vals[idx]))
                             cluster_results[pid][(n_pid, cid, sid)].append((cluster_labels[idx], travel_result[2],
                                                                             cluster_decisions[idx]))
-    bD.write_variable(final_result, 'count_result', output_path)
-    bD.write_variable(cluster_results, 'cluster_results', output_path)
-        # TODO: 1: read the pid's data file,
-        # TODO: 2.1: for each new file get extract the label from the survey,
-        # TODO: 2.2: check whether the person is travelling, or stationary, if stationary check for
-        # membership within older clusters
-        # TODO: 2.3: create confusion matrix, save individual results
+        print 'confusion matrix: '
+        conf_mat = {}
+        for main_tuple in final_result[pid]:
+            count_data = final_result[pid][main_tuple]
+            actual_label = count_data[0][0]
+            for count_idx in range(1, len(count_data)):
+                predicted_label = count_data[count_idx][0]
+                if (actual_label, predicted_label) not in conf_mat:
+                    conf_mat[(actual_label, predicted_label)] = 0
+                conf_mat[((actual_label, predicted_label))] += count_data[count_idx][1]
+        print conf_mat
+
+    bD.write_variable(final_result, 'count_result.res', output_path)
+    bD.write_variable(cluster_results, 'cluster_results.res', output_path)
 
 if __name__ == "__main__":
     main()
