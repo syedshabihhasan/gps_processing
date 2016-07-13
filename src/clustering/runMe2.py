@@ -41,6 +41,7 @@ def main():
     min_data_sample_no = 5
     final_result = {}
     cluster_results = {}
+    conf_mat_results = {}
     for pid in participant_list:
         print '\n\npid: ' + pid
         if len(per_participant_data[pid]) < min_data_sample_no:
@@ -100,12 +101,17 @@ def main():
                 predicted_label = count_data[count_idx][0]
                 if (actual_label, predicted_label) not in conf_mat:
                     conf_mat[(actual_label, predicted_label)] = 0
-                conf_mat[((actual_label, predicted_label))] += count_data[count_idx][1]
+                conf_mat[(actual_label, predicted_label)] += count_data[count_idx][1]
         print conf_mat
+        conf_mat_results[pid] = conf_mat
         print 'Missing GPS: ', missing_gps
 
+    print 'Writing results to file'
     bD.write_variable(final_result, 'count_result.res', output_path)
     bD.write_variable(cluster_results, 'cluster_results.res', output_path)
+    bD.write_variable(conf_mat_results, 'conf_mat_results.res', output_path)
+    print 'done'
+    print 'TADAA!!'
 
 if __name__ == "__main__":
     main()
