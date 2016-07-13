@@ -28,5 +28,8 @@ def writecluster(pid, clusters, op_path, c_type='S', cluster_label=None):
 
 
 def write_variable(variable, filename, op_path):
+    final_path = op_path + '/debug/'
+    if not os.path.exists(final_path):
+        os.makedirs(final_path)
     with open(op_path + '/debug/' + filename, 'wb') as f:
         pickle.dump(variable, f)
