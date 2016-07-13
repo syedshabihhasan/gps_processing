@@ -38,7 +38,7 @@ class gps_service:
         self.__internal_location_info = {}
         self.__stationary_cluster_label = []
 
-    def get_travelling_and_stationary_clusters(self):
+    def get_travelling_and_stationary_clusters(self, eps_list=range(20, 51, 10), min_sample_list=[3, 5, 7]):
         '''
         for each data point within the participant data, distinguish between the travelling, and non-travelling data.
         Once all the travelling clusters, and non-travelling points have been extracted perform the DBSCAN clustering
@@ -59,8 +59,7 @@ class gps_service:
                 self.__error_files += 1
                 continue
             # TODO: the speed limit has to be decided, are people walking also considered travelling?
-            distances, speeds = travel.getalldistancesandspeeds(gps_coords_clean)
-            travel_result = travel.istravelling(speeds, gps_coords_clean, selection_factor=0.7)
+            travel_result = self.find_travelling(gps_coords_clean)
             if travel_result[0]:
                 # travel_clusters.append(gps_coords_clean)
                 if not 0 == len(travel_result[1]):
@@ -69,8 +68,6 @@ class gps_service:
                     self.__stationary_points += travel_result[2]
             else:
                 self.__stationary_points += gps_coords_clean
-        eps_list = range(20, 51, 10)
-        min_sample_list = [3, 5, 7]
         '''
         since all the stationary points are being collected for a given participants, the hull intersection functions
         never get called.
@@ -104,7 +101,14 @@ class gps_service:
             most_common_label = label_counts.most_common(1)
             self.__stationary_cluster_label.append(most_common_label[0][0])
         return self.__travel_clusters, self.__stationary_clusters, self.__stationary_cluster_boundaries, \
-               self.__stationary_cluster_label, self.__noise_markers, self.__error_files
+               self.__stationary_cluster_label, self.__noise_markers, self.__error_files, self.__stationary_points
+
+    @staticmethod
+    def find_travelling(gps_coords_clean, selection_factor=0.7, speed_limit=5):
+        distances, speeds = travel.getalldistancesandspeeds(gps_coords_clean)
+        travel_result = travel.istravelling(speeds, gps_coords_clean, selection_factor=selection_factor,
+                                            speed_limit=speed_limit)
+        return travel_result
 
     def __init__(self):
         pass
