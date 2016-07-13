@@ -1,6 +1,7 @@
 from __future__ import division
 from math import radians, sin, cos, atan2, sqrt
 from scipy.spatial import ConvexHull
+from scipy.spatial import Delaunay
 from shapely.geometry import Polygon
 
 
@@ -47,16 +48,14 @@ def getboundary(all_coord):
 
 
 def check_polygon_membership(cluster_boundary, points_to_check):
-    cluster_boundary_points = [(x[0], x[1]) for x in cluster_boundary]
-    gps_coords_to_check = [(x[0], x[1]) for x in points_to_check]
-    try:
-        cluster_polygon = Polygon(cluster_boundary_points)
-    except:
-        print 'Error occured, data: ', cluster_boundary
-        raise
+    cluster_boundary_points = [[x[0], x[1]] for x in cluster_boundary]
+    hull = cluster_boundary_points
+    if not isinstance(hull, Delaunay):
+        hull = Delaunay(hull)
+    gps_coords_to_check = [[x[0], x[1]] for x in points_to_check]
     point_in_cluster = []
     for coord in gps_coords_to_check:
-        point_in_cluster.append(1 if cluster_polygon.contains(coord) else 0)
+        point_in_cluster.append(1 if hull.find_simplex(coord) >= 0 else 0)
     return point_in_cluster
 
 
