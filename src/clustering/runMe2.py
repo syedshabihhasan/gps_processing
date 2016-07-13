@@ -58,12 +58,14 @@ def main():
             data_dict = pickle.load(f)
             cluster_boundaries = data_dict['boundary']
             cluster_labels = data_dict['label']
+            missing_gps = 0
         for data_sample in per_participant_data[pid]:
             n_pid = data_sample[SurveyConstants.PATIENT_ID]
             cid = data_sample[SurveyConstants.CONDITION_ID]
             sid = data_sample[SurveyConstants.SESSION_ID]
             if '' == data_sample[SurveyConstants.GPS_PATH]:
-                print 'empty gps file path, skipping \n', data_sample
+                #print 'empty gps file path, skipping \n', data_sample
+                missing_gps += 1
                 continue
             gps_coords_clean = pr.getcleangpsdata(data_sample[SurveyConstants.GPS_PATH], remove_duplicates=True,
                                                   pid=n_pid, cid=cid, sid=sid)
@@ -100,6 +102,7 @@ def main():
                     conf_mat[(actual_label, predicted_label)] = 0
                 conf_mat[((actual_label, predicted_label))] += count_data[count_idx][1]
         print conf_mat
+        print 'Missing GPS: ', missing_gps
 
     bD.write_variable(final_result, 'count_result.res', output_path)
     bD.write_variable(cluster_results, 'cluster_results.res', output_path)
