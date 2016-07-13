@@ -47,7 +47,11 @@ def getboundary(all_coord):
 
 
 def check_polygon_membership(cluster_boundary, points_to_check):
-    cluster_polygon = Polygon(cluster_boundary)
+    try:
+        cluster_polygon = Polygon(cluster_boundary)
+    except:
+        print 'Error occured, data: ', cluster_boundary
+        raise
     point_in_cluster = []
     for coord in points_to_check:
         point_in_cluster.append(1 if cluster_polygon.contains(coord) else 0)
