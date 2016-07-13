@@ -62,6 +62,8 @@ def main():
             n_pid = data_sample[SurveyConstants.PATIENT_ID]
             cid = data_sample[SurveyConstants.CONDITION_ID]
             sid = data_sample[SurveyConstants.SESSION_ID]
+            if '' == data_sample[SurveyConstants.GPS_PATH]:
+                print 'empty gps file path, \n', data_sample
             gps_coords_clean = pr.getcleangpsdata(data_sample[SurveyConstants.GPS_PATH], remove_duplicates=True,
                                                   pid=n_pid, cid=cid, sid=sid)
             if gps_coords_clean is None:
