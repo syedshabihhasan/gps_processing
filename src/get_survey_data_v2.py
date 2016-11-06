@@ -33,10 +33,17 @@ def match_files(filename, file_list):
 
 
 def read_survey_file(survey_filename):
+    tags = ['patient', 'condition', 'session', 'survey', 'start-time', 'end-time', 'app-welcome', 'listening',
+            'duration', 'subject-bash', 'subject-welcome', 'acSpeech', 'ac', 'location',
+            'lc', 'tf', 'vc', 'tl', 'nz', 'nl', 'rs', 'cp', 'sp', 'le', 'ld', 'ld2', 'lcl', 'hau', 'hapq',
+            'st', 'ap', 'qol', 'im', 'user-initiated', 'gpsPath', 'surveyPath', 'audioPath']
+    survey_dict = {x:'' for x in tags}
     with open(survey_filename, 'r') as f:
         survey_data = f.read().splitlines()
-    survey_dict = {x.split('=')[0]: x.split('=')[1] for x in survey_data}
-    if 'survey' in survey_dict:
+    for data in survey_data:
+        tag_val = data.split('=')
+        survey_dict[tag_val[0]] = tag_val[1]
+    if not survey_dict['survey'] == '':
         survey_dict['session'] = survey_dict['survey']
     else:
         survey_dict['survey'] = ''
