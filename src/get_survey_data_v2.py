@@ -38,6 +38,8 @@ def read_survey_file(survey_filename):
     survey_dict = {x.split('=')[0]: x.split('=')[1] for x in survey_data}
     if 'survey' in survey_dict:
         survey_dict['session'] = survey_dict['survey']
+    else:
+        survey_dict['survey'] = ''
     survey_dict['condition'] = survey_filename.split('/')[-1].split('.')[1]
     return survey_dict
 
