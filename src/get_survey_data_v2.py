@@ -115,7 +115,7 @@ def main():
     for survey_filename in tqdm(survey_file_list):
         survey_dict = read_survey_file(survey_filename)
         matching_audio = match_files(survey_filename, audio_file_list)
-        matching_gps = match_files(survey_file_list, gps_file_list)
+        matching_gps = match_files(survey_filename, gps_file_list)
         if len(matching_audio) > 1 or len(matching_gps) > 1:
             problem_files.append([survey_filename, matching_audio, matching_gps])
         try:
