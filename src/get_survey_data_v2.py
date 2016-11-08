@@ -142,6 +142,8 @@ def main():
     print('Writing the error files')
     with open(error_folder + 'error.dat', 'wb') as f:
         pickle.dump(error_files, f)
+    with open(error_folder + 'problem_files.dat', 'wb') as f:
+        pickle.dump(problem_files, f)
     print('TADAA!!')
 
 
