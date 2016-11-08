@@ -100,6 +100,8 @@ def compile_survey_into_text(survey_dict, survey_file, audio_file, gps_file, inc
                 to_return = to_return[:-1]
         else:
             to_return = survey_text + ',,,'
+    else:
+        to_return = survey_text
 
     return to_return
 
